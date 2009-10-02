@@ -1,14 +1,14 @@
-{% load site_tags %}<script type="text/javascript" src="{% media_url %}js/uploadify/swfobject.js"></script>
-<script type="text/javascript" src="{% media_url %}js/uploadify/jquery.uploadify.v2.1.0.min.js"></script>
+<script type="text/javascript" src="{{ uploadify_path }}swfobject.js"></script>
+<script type="text/javascript" src="{{ uploadify_path }}jquery.uploadify.js"></script>
 <div id="uploadify" class="multi-file-upload"><input id="fileInput" name="fileInput" type="file" /></div>
 <script type="text/javascript">// <![CDATA[
 $(document).ready(function() {
 $('#fileInput').uploadify({
-'uploader'  : '{% media_url %}js/uploadify/uploadify.swf',
+'uploader'  : '{{ uploadify_path }}uploadify.swf',
 'script'    : '{% url uploadify_upload %}',
-'cancelImg' : '{% media_url %}js/uploadify/cancel.png',
+'cancelImg' : '{{ uploadify_path }}cancel.png',
 'auto'      : true,
-'folder'    : '{% media_url %}uploads/',
+'folder'    : '{{ upload_path }}',
 'multi'     : true,
 'onAllComplete' : allComplete
 });
@@ -21,5 +21,7 @@ function allComplete(event, data) {
         'allBytesLoaded': data.allBytesLoaded,
         'speed': data.speed
     });
+    // Raise custom event
+    $('#uploadify').trigger('allUploadsComplete', data);
 }
 // ]]></script>
